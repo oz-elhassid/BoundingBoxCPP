@@ -9,6 +9,7 @@ const string intersectText = "intersect";
 const string separateText = "separate";
 const string invalidVertical = "invalid - top should be above bottom";
 const string invalidHorizontal = "invalid - right should be greater than left";
+const string insideText = intersectText;
 
 BoundingBox::BoundingBox (double left, double right, double top, double bottom):
                         left(left), right(right), top(top), bottom(bottom) {}
@@ -50,8 +51,11 @@ string checkRelation(BoundingBox box1, BoundingBox box2) {
     catch(const domain_error &e) {
         return ((string)e.what() + " - box2");
     }
-    if (box1.getLeft() <= box2.getRight() && box2.getLeft() <= box1.getRight() && box1.getBottom() <= box2.getTop() && box2.getBottom() <= box1.getTop())
+    if (box1.getLeft() <= box2.getRight() && box2.getLeft() <= box1.getRight() && box1.getBottom() <= box2.getTop() && box2.getBottom() <= box1.getTop()){
+        if ((box1.getLeft() > box2.getLeft() && box1.getRight() < box2.getRight() && box1.getBottom() > box2.getBottom() && box1.getTop() < box2.getTop()) || (box2.getLeft() > box1.getLeft() && box2.getRight() < box1.getRight() && box2.getBottom() > box1.getBottom() && box2.getTop() < box1.getTop()))
+            return insideText;
         return intersectText;
+    }
     return separateText;
 }
 
@@ -72,21 +76,4 @@ vector<BoundingBox> checkArray(vector<BoundingBox> &arr){
         sorted = removeIntersect(sorted, sorted[0]);
     }
     return output;
-}
-
-int main(int argc, char const *argv[])
-{
-    BoundingBox rectA = BoundingBox(10, 30, 30, 10);
-    BoundingBox rectB = BoundingBox(20, 50, 50, 20);
-    BoundingBox rectC = BoundingBox(70, 90, 90, 70);
-    vector<BoundingBox> arr = {rectA, rectB, rectC};
-
-    cout<<(checkRelation(rectA, rectB))<<endl;
-    cout<<(checkRelation(rectA, rectC))<<endl;
-    vector<BoundingBox> checked = checkArray(arr);
-    for (BoundingBox b : checked)
-        cout<<(b.to_string())<<endl;
-
-    // for (BoundingBox b : arr)
-    //     cout<<(b.to_string())<<endl;
 }
