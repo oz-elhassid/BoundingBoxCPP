@@ -2,7 +2,8 @@
 
 const std::string intersectText = "intersect";
 const std::string separateText = "separate";
-const std::string invalidText = "invalid";
+const std::string invalidVertical = "invalid - top should be abov bottom";
+const std::string invalidHorizontal = "invalid - right should be greater than left";
 
 BoundingBox::BoundingBox (double left, double right, double top, double bottom):
                         left(left), right(right), top(top), bottom(bottom) {}
@@ -19,21 +20,27 @@ double BoundingBox::getTop(){
 double BoundingBox::getBottom(){
     return bottom;
 }
-static std::domain_error* checkBox(BoundingBox box) {
+
+static void checkBox(BoundingBox box) {
     if (box.getLeft() > box.getRight())
-        return new std::domain_error("fasdf");
+        throw std::domain_error(invalidHorizontal);
     if (box.getBottom() > box.getTop())
-        return new std::domain_error("top should be above bottom");
-    return nullptr;
+        throw std::domain_error(invalidVertical);
 }
 
 std::string checkRelation(BoundingBox box1, BoundingBox box2) {
-    const std::domain_error *valid1 = checkBox(box1);
-    const std::domain_error *valid2 = checkBox(box2);
-    if (valid1 != nullptr)
-        return invalidText + ": " + valid1->what();
-    if (valid2 != nullptr)
-        return invalidText + ": " + valid2->what();
+    try {
+        checkBox(box1);
+    }
+    catch(const std::domain_error e) {
+        return ((std::string)e.what() + " - box1");
+    }
+    try {
+        checkBox(box2);
+    }
+    catch(const std::domain_error e) {
+        return ((std::string)e.what() + " - box2");
+    }
     if (box1.getLeft() <= box2.getRight() && box2.getLeft() <= box1.getRight() && box1.getBottom() <= box2.getTop() && box2.getBottom() <= box1.getTop())
         return intersectText;
     return separateText;
