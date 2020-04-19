@@ -1,57 +1,92 @@
 #include "BoundingBox.h"
+#include <vector>
+#include <string>
+#include <bits/stdc++.h>
 
-const std::string intersectText = "intersect";
-const std::string separateText = "separate";
-const std::string invalidVertical = "invalid - top should be abov bottom";
-const std::string invalidHorizontal = "invalid - right should be greater than left";
+using namespace std;
+
+const string intersectText = "intersect";
+const string separateText = "separate";
+const string invalidVertical = "invalid - top should be above bottom";
+const string invalidHorizontal = "invalid - right should be greater than left";
 
 BoundingBox::BoundingBox (double left, double right, double top, double bottom):
                         left(left), right(right), top(top), bottom(bottom) {}
 
-double BoundingBox::getLeft(){
+double BoundingBox::getLeft() const{
     return left;
 }
-double BoundingBox::getRight(){
+double BoundingBox::getRight() const{
     return right;
 }
-double BoundingBox::getTop(){
+double BoundingBox::getTop() const{
     return top;
 }
-double BoundingBox::getBottom(){
+double BoundingBox::getBottom() const{
     return bottom;
 }
 
-static void checkBox(BoundingBox box) {
-    if (box.getLeft() > box.getRight())
-        throw std::domain_error(invalidHorizontal);
-    if (box.getBottom() > box.getTop())
-        throw std::domain_error(invalidVertical);
+string BoundingBox::to_string() const {
+    return ("left: "+std::to_string(getLeft())+" right: "+std::to_string(getRight())+" top: "+std::to_string(getTop())+" bottom: "+std::to_string(getBottom()));
 }
 
-std::string checkRelation(BoundingBox box1, BoundingBox box2) {
+void BoundingBox::checkBox(BoundingBox box) {
+    if (box.getLeft() > box.getRight())
+        throw domain_error(invalidHorizontal);
+    if (box.getBottom() > box.getTop())
+        throw domain_error(invalidVertical);
+}
+
+string checkRelation(BoundingBox box1, BoundingBox box2) {
     try {
-        checkBox(box1);
+        BoundingBox::checkBox(box1);
     }
-    catch(const std::domain_error e) {
-        return ((std::string)e.what() + " - box1");
+    catch(const domain_error &e) {
+        return ((string)e.what() + " - box1");
     }
     try {
-        checkBox(box2);
+        BoundingBox::checkBox(box2);
     }
-    catch(const std::domain_error e) {
-        return ((std::string)e.what() + " - box2");
+    catch(const domain_error &e) {
+        return ((string)e.what() + " - box2");
     }
     if (box1.getLeft() <= box2.getRight() && box2.getLeft() <= box1.getRight() && box1.getBottom() <= box2.getTop() && box2.getBottom() <= box1.getTop())
         return intersectText;
     return separateText;
-} 
+}
+
+vector<BoundingBox> removeIntersect(vector<BoundingBox> &arr, BoundingBox box) {
+    vector<BoundingBox> output = {};
+    for (auto box2 : arr)
+        if ((checkRelation(box, box2).compare(separateText)) == 0)
+            output.push_back(box2);
+    return output;
+}
+
+vector<BoundingBox> checkArray(vector<BoundingBox> &arr){
+    vector<BoundingBox> sorted = arr;
+    sort(sorted.begin(), sorted.end(), [](BoundingBox box1, BoundingBox box2) -> bool {return box1.getRight() != box2.getRight() ? box1.getRight() < box2.getRight() : box1.getTop() < box2.getTop();});
+    vector<BoundingBox> output = {};
+    while (!sorted.empty()){
+        output.push_back(sorted[0]);
+        sorted = removeIntersect(sorted, sorted[0]);
+    }
+    return output;
+}
 
 int main(int argc, char const *argv[])
 {
-    BoundingBox rectA = BoundingBox( 10,  30,  30,  10);
-    BoundingBox rectB = BoundingBox( 20,  50,  50,  20);
-    BoundingBox rectC = BoundingBox( 70,  90,  90,  170);
+    BoundingBox rectA = BoundingBox(10, 30, 30, 10);
+    BoundingBox rectB = BoundingBox(20, 50, 50, 20);
+    BoundingBox rectC = BoundingBox(70, 90, 90, 70);
+    vector<BoundingBox> arr = {rectA, rectB, rectC};
 
-    std::cout<<(checkRelation(rectA, rectB))<<std::endl;
-    std::cout<<(checkRelation(rectA, rectC))<<std::endl;
+    cout<<(checkRelation(rectA, rectB))<<endl;
+    cout<<(checkRelation(rectA, rectC))<<endl;
+    vector<BoundingBox> checked = checkArray(arr);
+    for (BoundingBox b : checked)
+        cout<<(b.to_string())<<endl;
+
+    // for (BoundingBox b : arr)
+    //     cout<<(b.to_string())<<endl;
 }

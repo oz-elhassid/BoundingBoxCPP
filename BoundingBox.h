@@ -3,11 +3,12 @@
 class BoundingBox {
     public:
         BoundingBox(double left, double right, double top, double bottom);
-        double getLeft();
-        double getRight();
-        double getTop();
-        double getBottom();
-        static std::domain_error checkBox(BoundingBox box1, BoundingBox box2);
+        double getLeft() const;
+        double getRight() const;
+        double getTop() const;
+        double getBottom() const;
+        std::string to_string() const;
+        static void checkBox(BoundingBox box);
 
     private:
         double left;
