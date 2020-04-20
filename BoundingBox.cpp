@@ -9,7 +9,7 @@ BoundingBox::BoundingBox (double left, double right, double top, double bottom):
 const unordered_map<BoundingBox::boxRelation, string> BoundingBox::boxRelationMap = {{BoundingBox::boxRelation::intersect, "intersect"},
                                                                         {BoundingBox::boxRelation::separate, "separate"},
                                                                         {BoundingBox::boxRelation::invalidVertical, "invalid - top should be above bottom"},
-                                                                        {BoundingBox::boxRelation::invalidHorizontal, " right should be greater than left"},
+                                                                        {BoundingBox::boxRelation::invalidHorizontal, "invalid - right should be greater than left"},
                                                                         {BoundingBox::boxRelation::invalidInside, "invalid - one box is inside the other"},
                                                                         {BoundingBox::boxRelation::inside, "one box is inside the other"}};
 
