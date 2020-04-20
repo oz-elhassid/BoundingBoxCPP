@@ -1,6 +1,12 @@
 #include "BoundingBox.h"
 
 using namespace std;
+
+void print(vector<BoundingBox> v) {
+    for (auto item : v)
+        cout<<(item.to_string())<<endl;
+}
+
 int main()
 {
     const BoundingBox boxA = BoundingBox(10, 30, 30, 10);
@@ -12,11 +18,10 @@ int main()
 
     cout<<(BoundingBox::checkRelation(boxA, boxB))<<endl;
     cout<<(BoundingBox::checkRelation(boxA, boxC))<<endl;
+    cout<<(BoundingBox::checkRelation(boxD, boxE))<<endl;
     vector<BoundingBox> checked1 = BoundingBox::checkArray(arr);
-    for (BoundingBox b : checked1)
-        cout<<(b.to_string())<<endl;
+    print(checked1);
     cout<<(BoundingBox::checkRelation(boxD, boxE, BoundingBox::boxRelation::inside))<<endl;
     vector<BoundingBox> checked2 = BoundingBox::checkArray(arr, BoundingBox::boxRelation::inside);
-    for (BoundingBox b : checked2)
-        cout<<(b.to_string())<<endl;
+    print(checked2);
 }
