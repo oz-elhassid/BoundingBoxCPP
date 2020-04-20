@@ -14,8 +14,10 @@ int main()
     const BoundingBox boxC = BoundingBox(70, 90, 90, 70);
     const BoundingBox boxD = BoundingBox(100.9, 200.9, 200.9, 100.9);
     const BoundingBox boxE = BoundingBox(150, 190.5, 190.5, 150.5);
+    const BoundingBox boxF = BoundingBox(40, 30, 30, 10);
     vector<BoundingBox> arr = {boxA, boxB, boxC, boxD, boxE, boxB, boxD};
-
+    
+    cout<<("boxA and boxF: " + BoundingBox::checkRelation(boxA, boxF))<<endl;
     cout<<("boxA and boxB: " + BoundingBox::checkRelation(boxA, boxB))<<endl;
     cout<<("boxA and boxC: " + BoundingBox::checkRelation(boxA, boxC))<<endl;
     cout<<("boxD and boxE: " + BoundingBox::checkRelation(boxD, boxE))<<endl;
