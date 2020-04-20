@@ -1,4 +1,9 @@
+#ifndef BOUNDING_BOX
+#define BOUNDING_BOX
+
 #include <iostream>
+#include <vector>
+#include <bits/stdc++.h>
 
 class BoundingBox {
     public:
@@ -8,11 +13,26 @@ class BoundingBox {
         double getTop() const;
         double getBottom() const;
         std::string to_string() const;
-        static void checkBox(BoundingBox box);
+        enum boxRelation {
+            intersect,
+            separate,
+            invalidVertical,
+            invalidHorizontal,
+            invalidInside,
+            inside
+        };
+        static std::string checkRelation(BoundingBox box1, BoundingBox box2, boxRelation inside = defaultInside);
+        static std::vector<BoundingBox> checkArray(std::vector<BoundingBox> &arr, boxRelation inside = defaultInside);
 
     private:
         double left;
         double right;
         double top;
         double bottom;
+        static const std::unordered_map<boxRelation, std::string> boxRelationMap;
+        static const boxRelation defaultInside = boxRelation::separate;
+        static void checkBox(BoundingBox box);
+        static std::vector<BoundingBox> removeIntersect(std::vector<BoundingBox> &arr, BoundingBox box, boxRelation inside = defaultInside);
 };
+
+#endif

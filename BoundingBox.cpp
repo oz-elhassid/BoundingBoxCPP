@@ -1,18 +1,17 @@
 #include "BoundingBox.h"
-#include <vector>
-#include <string>
-#include <bits/stdc++.h>
 
 using namespace std;
 
-const string intersectText = "intersect";
-const string separateText = "separate";
-const string invalidVertical = "invalid - top should be above bottom";
-const string invalidHorizontal = "invalid - right should be greater than left";
-const string insideText = intersectText;
-
 BoundingBox::BoundingBox (double left, double right, double top, double bottom):
                         left(left), right(right), top(top), bottom(bottom) {}
+
+
+const unordered_map<BoundingBox::boxRelation, string> BoundingBox::boxRelationMap = {{BoundingBox::boxRelation::intersect, "intersect"},
+                                                                        {BoundingBox::boxRelation::separate, "separate"},
+                                                                        {BoundingBox::boxRelation::invalidVertical, "invalid - top should be above bottom"},
+                                                                        {BoundingBox::boxRelation::invalidHorizontal, " right should be greater than left"},
+                                                                        {BoundingBox::boxRelation::invalidInside, "invalid - one box is inside the other"},
+                                                                        {BoundingBox::boxRelation::inside, "one box is inside the other"}};
 
 double BoundingBox::getLeft() const{
     return left;
@@ -33,47 +32,47 @@ string BoundingBox::to_string() const {
 
 void BoundingBox::checkBox(BoundingBox box) {
     if (box.getLeft() > box.getRight())
-        throw domain_error(invalidHorizontal);
+        throw domain_error(boxRelationMap.at(boxRelation::invalidHorizontal));
     if (box.getBottom() > box.getTop())
-        throw domain_error(invalidVertical);
+        throw domain_error(boxRelationMap.at(boxRelation::invalidVertical));
 }
 
-string checkRelation(BoundingBox box1, BoundingBox box2) {
+string BoundingBox::checkRelation(BoundingBox box1, BoundingBox box2, boxRelation inside) {
     try {
-        BoundingBox::checkBox(box1);
+        checkBox(box1);
     }
     catch(const domain_error &e) {
         return ((string)e.what() + " - box1");
     }
     try {
-        BoundingBox::checkBox(box2);
+        checkBox(box2);
     }
     catch(const domain_error &e) {
         return ((string)e.what() + " - box2");
     }
     if (box1.getLeft() <= box2.getRight() && box2.getLeft() <= box1.getRight() && box1.getBottom() <= box2.getTop() && box2.getBottom() <= box1.getTop()){
         if ((box1.getLeft() > box2.getLeft() && box1.getRight() < box2.getRight() && box1.getBottom() > box2.getBottom() && box1.getTop() < box2.getTop()) || (box2.getLeft() > box1.getLeft() && box2.getRight() < box1.getRight() && box2.getBottom() > box1.getBottom() && box2.getTop() < box1.getTop()))
-            return insideText;
-        return intersectText;
+            return boxRelationMap.at(inside);
+        return boxRelationMap.at(BoundingBox::boxRelation::intersect);
     }
-    return separateText;
+    return boxRelationMap.at(BoundingBox::boxRelation::separate);
 }
 
-vector<BoundingBox> removeIntersect(vector<BoundingBox> &arr, BoundingBox box) {
+vector<BoundingBox> BoundingBox::removeIntersect(vector<BoundingBox> &arr, BoundingBox box, BoundingBox::boxRelation inside) {
     vector<BoundingBox> output = {};
     for (auto box2 : arr)
-        if ((checkRelation(box, box2).compare(separateText)) == 0)
+        if ((checkRelation(box, box2, inside).compare(boxRelationMap.at(BoundingBox::boxRelation::separate))) == 0)
             output.push_back(box2);
     return output;
 }
 
-vector<BoundingBox> checkArray(vector<BoundingBox> &arr){
+vector<BoundingBox> BoundingBox::checkArray(vector<BoundingBox> &arr, BoundingBox::boxRelation inside){
     vector<BoundingBox> sorted = arr;
     sort(sorted.begin(), sorted.end(), [](BoundingBox box1, BoundingBox box2) -> bool {return box1.getRight() != box2.getRight() ? box1.getRight() < box2.getRight() : box1.getTop() < box2.getTop();});
     vector<BoundingBox> output = {};
     while (!sorted.empty()){
         output.push_back(sorted[0]);
-        sorted = removeIntersect(sorted, sorted[0]);
+        sorted = removeIntersect(sorted, sorted[0], inside);
     }
     return output;
 }
