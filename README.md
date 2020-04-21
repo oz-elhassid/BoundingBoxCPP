@@ -1,5 +1,5 @@
-# BoundingBoxTS
-A simple code to check the relation between axis-aligned bounding boxes.
+# BoundingBoxCPP
+A simple C++ code to check the relation between axis-aligned bounding boxes.
 
 ## Building
 First, clone the repository:
