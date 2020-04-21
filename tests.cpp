@@ -20,7 +20,7 @@ string test(const string& str1, const string& str2) {
     return failed;
 }
 
-string testLen (const vector<BoundingBox>& arr, int n) {
+string testLen (const vector<BoundingBox>& arr, unsigned int n) {
     totalTests++;
     if (arr.size() <= n){
         passedTests++;
