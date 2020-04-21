@@ -1,4 +1,4 @@
-name: C++ Makefile CI
+name: C++ using Makefile CI
 
 on:
   push:
