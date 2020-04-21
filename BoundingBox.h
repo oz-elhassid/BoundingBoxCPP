@@ -24,13 +24,13 @@ class BoundingBox {
         };
         static std::string checkRelation(BoundingBox box1, BoundingBox box2, boxRelation inside = defaultInside);
         static std::vector<BoundingBox> checkArray(std::vector<BoundingBox> &arr, boxRelation inside = defaultInside);
+        static const std::unordered_map<boxRelation, std::string> boxRelationMap;
 
     private:
         double left;
         double right;
         double top;
         double bottom;
-        static const std::unordered_map<boxRelation, std::string> boxRelationMap;
         static const boxRelation defaultInside = boxRelation::separate;
         static void checkBox(BoundingBox box);
         static std::vector<BoundingBox> removeIntersect(std::vector<BoundingBox> &arr, BoundingBox box, boxRelation inside = defaultInside);
