@@ -1,20 +1,16 @@
 # BoundingBoxTS
 
-Running the project is pretty straight forward.
-
-First, you'll need a C++ compiler, such as g++.
-
-Then, clone the repository:
+First, clone the repository:
 ```
 git clone https://github.com/oz-elhassid/BoundingBoxCPP.git
 ```
 if you don't have git installed or don't want to use the command line, you can use the green `Clone or download` button to download as zip.
 
-Then, to build, navigate to the cloned directory and run:
+Then, assuming `g++` (part of [GCC](https://gcc.gnu.org/)) is installed, build by navigating to the cloned directory and running:
 ```
 make
 ```
-In order to run the tests, run:
+after building, run the tests, by running:
 ```
 ./tests
 ```
