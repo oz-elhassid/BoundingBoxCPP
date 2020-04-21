@@ -1,6 +1,6 @@
 CPP	:=	g++ -Wall -Wextra
 
-.PHONY: all clean
+.PHONY: all check clean
 
 all: tests
 
