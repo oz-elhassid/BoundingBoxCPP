@@ -8,7 +8,7 @@ git clone https://github.com/oz-elhassid/BoundingBoxCPP.git
 ```
 if you don't have git installed or don't want to use the command line, you can use the green `Clone or download` button to download as zip.
 
-Then, assuming `g++` (part of [GCC](https://gcc.gnu.org/)) is installed, build by navigating to the cloned directory and running:
+Then, assuming `make` and `g++` (part of [GCC](https://gcc.gnu.org/)) are installed, build by navigating to the cloned directory and running:
 ```
 make
 ```
