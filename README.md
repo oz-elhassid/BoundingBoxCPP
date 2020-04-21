@@ -1,5 +1,7 @@
 # BoundingBoxTS
+A simple code to check the relation between axis-aligned bounding boxes.
 
+## Building
 First, clone the repository:
 ```
 git clone https://github.com/oz-elhassid/BoundingBoxCPP.git
@@ -10,7 +12,7 @@ Then, assuming `g++` (part of [GCC](https://gcc.gnu.org/)) is installed, build b
 ```
 make
 ```
-after building, run the tests, by running:
+after building, run the tests by running:
 ```
 ./tests
 ```
