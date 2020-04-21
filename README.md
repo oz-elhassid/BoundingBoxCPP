@@ -8,7 +8,7 @@ git clone https://github.com/oz-elhassid/BoundingBoxCPP.git
 ```
 if you don't have git installed or don't want to use the command line, you can use the green `Clone or download` button to download as zip.
 
-Then, assuming `make` and `g++` (part of [GCC](https://gcc.gnu.org/)) are installed, build by navigating to the cloned directory and running:
+If you are using linux, a makefile is provided. Assuming `make` and `g++` (part of [GCC](https://gcc.gnu.org/)) are installed, build by navigating to the cloned directory and running:
 ```
 make
 ```
@@ -16,6 +16,11 @@ after building, run the tests by running:
 ```
 ./tests
 ```
+If you are not using linux, or if the makefile did not work for you, use [CMake](https://cmake.org/) to generate a buildsystem using:
+```
+cmake ./
+```
+build accordingly and run the `tests` file.
 ## Usage
 `BoundingBox`: A class consists mainly of four numerical values describing each of the bounds.  
 `BoundingBox(double left, double right, double top, double bottom)`: A constructor for the class.
