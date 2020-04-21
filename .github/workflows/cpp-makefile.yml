@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: C++ Makefile CI
 
 on:
   push:
@@ -13,13 +13,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: build and run tests
-      run: make check
-    - name: make clean
-      run: make clean
-    - name: cmake
-      run: cmake ./
     - name: make
       run: make
     - name: run tests
       run: ./tests
+    - name: make clean
+      run: make clean
